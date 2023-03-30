@@ -6,7 +6,7 @@ import { Module } from "../middleware";
 export default class Fork<T> implements Module<T, T> {
   #modules: Module<T, unknown>[] = [];
 
-  constructor(...modules: Module<T, unknown>[]) {
+  constructor(modules: Module<T, unknown>[]) {
     this.#modules = modules;
   }
 
