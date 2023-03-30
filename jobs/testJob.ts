@@ -1,8 +1,6 @@
-import { SerialJob } from "../middleware";
-import Fork from "../modules/fork";
-import numberToBoolean from "../modules/numberToBoolean";
-import stringToNumber from "../modules/stringToNumber";
+import { Loop } from "../modules/loop";
+import { Transform } from "../modules/transform";
 
-export default new SerialJob(stringToNumber)
-  .pipe(new Fork(numberToBoolean, numberToBoolean))
-  .pipe(numberToBoolean);
+const increment = new Transform<number, number>((data) => data + 1);
+
+export default new Loop(increment, new Transform((data) => data < 1));
