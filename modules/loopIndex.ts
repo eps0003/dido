@@ -4,16 +4,12 @@ import Module from "../module";
  * Repeatedly process the module in a for loop, passing the processed data between iterations.
  */
 export default class LoopIndex<T> implements Module<T, T> {
-  constructor(
-    private startIndex: Module<T, number>,
-    private endIndex: Module<T, number>,
-    private module: Module<T, T>
-  ) {}
+  constructor(private range: Range<T>, private module: Module<T, T>) {}
 
   async process(data: T) {
     for (
-      let i = await this.startIndex.process(data);
-      i < (await this.endIndex.process(data));
+      let i = await this.range[0].process(data);
+      i < (await this.range[1].process(data));
       i++
     ) {
       data = await this.module.process(data);
@@ -21,3 +17,5 @@ export default class LoopIndex<T> implements Module<T, T> {
     return data;
   }
 }
+
+export type Range<T> = [min: Module<T, number>, max: Module<T, number>];
