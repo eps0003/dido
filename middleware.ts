@@ -27,25 +27,3 @@ export class SerialJob<Input, Output> implements Module<Input, Output> {
     return d as Output;
   }
 }
-
-/**
- * Runs modules at the same time, passing the same input to each module and returning the input once all modules have finished processing.
- */
-export class ParallelJob<Data> implements Module<Data, Data> {
-  #modules: Module<Data, unknown>[] = [];
-
-  constructor(module: Module<Data, unknown>) {
-    this.#modules.push(module);
-  }
-
-  add(module: Module<Data, unknown>): ParallelJob<Data> {
-    this.#modules.push(module);
-    return this;
-  }
-
-  async process(data: Data): Promise<Data> {
-    const promises = this.#modules.map((module) => module.process(data));
-    await Promise.all(promises);
-    return data;
-  }
-}
