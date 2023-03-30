@@ -8,8 +8,8 @@ export default class RetryOnError<Input, Output>
   implements Module<Input, Output>
 {
   constructor(
-    private module: Module<Input, Output>,
-    private maxRetries: Module<Input, number> = new Literal(3)
+    private maxRetries: Module<Input, number> = new Literal(3),
+    private module: Module<Input, Output>
   ) {}
 
   async process(data: Input): Promise<Output> {

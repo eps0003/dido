@@ -5,8 +5,8 @@ import { Module } from "../middleware";
  */
 export class Loop<T> implements Module<T, T> {
   constructor(
-    private module: Module<T, T>,
-    private predicate: Module<T, boolean>
+    private predicate: Module<T, boolean>,
+    private module: Module<T, T>
   ) {}
 
   async process(data: T) {
