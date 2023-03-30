@@ -4,5 +4,5 @@ import numberToBoolean from "../modules/numberToBoolean";
 import stringToNumber from "../modules/stringToNumber";
 
 export default new SerialJob(stringToNumber)
-  .add(new Fork(numberToBoolean, numberToBoolean))
-  .add(numberToBoolean);
+  .pipe(new Fork(numberToBoolean, numberToBoolean))
+  .pipe(numberToBoolean);

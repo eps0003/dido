@@ -12,7 +12,7 @@ export class SerialJob<Input, Output> implements Module<Input, Output> {
     this.#modules.push(module);
   }
 
-  add<NextOutput>(
+  pipe<NextOutput>(
     module: Module<Output, NextOutput>
   ): SerialJob<Input, NextOutput> {
     this.#modules.push(module);
