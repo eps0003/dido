@@ -3,10 +3,10 @@ import { Module } from "../middleware";
 /**
  * Transforms the input using a transform function.
  */
-export class Transform<Input, Output> implements Module<Input, Output> {
+export default class Transform<Input, Output> implements Module<Input, Output> {
   constructor(private transform: (data: Input) => Output | Promise<Output>) {}
 
-  async process(data: Input) {
+  async process(data: Input): Promise<Output> {
     return await this.transform(data);
   }
 }
