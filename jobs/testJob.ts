@@ -1,7 +1,8 @@
-import { ParallelJob, SerialJob } from "../middleware";
+import { SerialJob } from "../middleware";
+import Fork from "../modules/fork";
 import numberToBoolean from "../modules/numberToBoolean";
 import stringToNumber from "../modules/stringToNumber";
 
 export default new SerialJob(stringToNumber)
-  .add(new ParallelJob(numberToBoolean).add(numberToBoolean))
+  .add(new Fork(numberToBoolean, numberToBoolean))
   .add(numberToBoolean);
