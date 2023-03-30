@@ -1,7 +1,7 @@
 import { Module } from "../middleware";
 
 /**
- *
+ * Repeatedly process the module in a for loop, passing the processed data between iterations.
  */
 export class LoopIndex<T> implements Module<T, T> {
   constructor(

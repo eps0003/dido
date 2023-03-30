@@ -4,9 +4,9 @@ import { Module } from "../middleware";
  * Runs modules at the same time, passing the same input to each module and returning the input once all modules have finished processing.
  */
 export default class Fork<T> implements Module<T, T> {
-  #modules: Module<T, unknown>[] = [];
+  #modules: Module<T, T>[] = [];
 
-  constructor(modules: Module<T, unknown>[]) {
+  constructor(modules: Module<T, T>[]) {
     this.#modules = modules;
   }
 
