@@ -1,5 +1,5 @@
-import { GenericModule } from "../middleware";
+import { Transform } from "./transform";
 
-export default new GenericModule<number, boolean>((data) => {
+export default new Transform<number, boolean>((data) => {
   return Boolean(data);
 });

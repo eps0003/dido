@@ -1,5 +1,5 @@
-import { GenericModule } from "../middleware";
+import { Transform } from "./transform";
 
-export default new GenericModule<string, number>((data) => {
+export default new Transform<string, number>((data) => {
   return parseFloat(data);
 });

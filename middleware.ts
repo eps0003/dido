@@ -3,17 +3,6 @@ export interface Module<Input, Output> {
 }
 
 /**
- * A generic module that accepts a transform function.
- */
-export class GenericModule<Input, Output> implements Module<Input, Output> {
-  constructor(private transform: (data: Input) => Output | Promise<Output>) {}
-
-  async process(data: Input) {
-    return await this.transform(data);
-  }
-}
-
-/**
  * Runs modules in order, passing the output of each module to the next as input.
  */
 export class SerialJob<Input, Output> implements Module<Input, Output> {
