@@ -1,4 +1,4 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Runs modules at the same time, passing the same input to each module and returning the input once all modules have finished processing.

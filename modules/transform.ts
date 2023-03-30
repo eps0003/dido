@@ -1,4 +1,4 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Transforms the input using a transform function.

@@ -1,4 +1,4 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Returns the input as output.

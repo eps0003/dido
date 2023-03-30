@@ -1,4 +1,4 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Parses a JSON string into an object.

@@ -1,4 +1,4 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Converts the input into a JSON string.

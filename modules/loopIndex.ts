@@ -1,9 +1,9 @@
-import { Module } from "../middleware";
+import Module from "../module";
 
 /**
  * Repeatedly process the module in a for loop, passing the processed data between iterations.
  */
-export class LoopIndex<T> implements Module<T, T> {
+export default class LoopIndex<T> implements Module<T, T> {
   constructor(
     private startIndex: Module<T, number>,
     private endIndex: Module<T, number>,

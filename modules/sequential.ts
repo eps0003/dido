@@ -1,22 +1,22 @@
-export interface Module<Input, Output> {
-  process: (data: Input) => Output | Promise<Output>;
-}
+import Module from "../module";
 
 /**
- * Runs modules in order, passing the output of each module to the next as input.
+ * Runs modules in succession, passing the output of each module to the next as input.
  */
-export class SerialJob<Input, Output> implements Module<Input, Output> {
+export default class Sequential<Input, Output>
+  implements Module<Input, Output>
+{
   #modules: Module<any, any>[] = [];
 
   constructor(module: Module<Input, Output>) {
     this.#modules.push(module);
   }
 
-  pipe<NextOutput>(
+  next<NextOutput>(
     module: Module<Output, NextOutput>
-  ): SerialJob<Input, NextOutput> {
+  ): Sequential<Input, NextOutput> {
     this.#modules.push(module);
-    return this as unknown as SerialJob<Input, NextOutput>;
+    return this as unknown as Sequential<Input, NextOutput>;
   }
 
   async process(data: Input): Promise<Output> {
