@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
   }
 }
