@@ -1,0 +1,7 @@
+{
+  "name": "middleware",
+  "version": "1.0.0",
+  "dependencies": {
+    "zod": "^3.21.4"
+  }
+}
