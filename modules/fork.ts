@@ -6,7 +6,7 @@ import Module from "../module";
 export default class Fork<T> implements Module<T, T> {
   #modules: Module<T, T>[] = [];
 
-  constructor(modules: Module<T, T>[]) {
+  constructor(...modules: Module<T, T>[]) {
     this.#modules = modules;
   }
 

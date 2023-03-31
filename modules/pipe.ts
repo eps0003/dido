@@ -3,9 +3,7 @@ import Module from "../module";
 /**
  * Runs modules in succession, passing the output of each module to the next as input.
  */
-export default class Sequential<Input, Output>
-  implements Module<Input, Output>
-{
+export default class Pipe<Input, Output> implements Module<Input, Output> {
   #modules: Module<any, any>[] = [];
 
   constructor(module: Module<Input, Output>) {
@@ -14,9 +12,9 @@ export default class Sequential<Input, Output>
 
   next<NextOutput>(
     module: Module<Output, NextOutput>
-  ): Sequential<Input, NextOutput> {
+  ): Pipe<Input, NextOutput> {
     this.#modules.push(module);
-    return this as unknown as Sequential<Input, NextOutput>;
+    return this as unknown as Pipe<Input, NextOutput>;
   }
 
   async process(data: Input): Promise<Output> {

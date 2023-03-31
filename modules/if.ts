@@ -3,7 +3,7 @@ import Module from "../module";
 /**
  * Conditionally processes the module if the predicate is true.
  */
-export default class Conditional<T> implements Module<T, T> {
+export default class If<T> implements Module<T, T> {
   constructor(
     private predicate: Module<T, boolean>,
     private module: Module<T, T>
