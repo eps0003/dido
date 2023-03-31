@@ -1,7 +1,7 @@
 import Module from "../module";
 
 /**
- *
+ * Splits the input array into batches of a specified size.
  */
 export default class Batch<T> implements Module<T[], T[][]> {
   constructor(private chunkSize: Module<T[], number>) {}
