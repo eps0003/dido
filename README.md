@@ -4,7 +4,7 @@
 
 Dido (**D**ata **I**n, **D**ata **O**ut) is an simple yet powerful, modular, vendor-agnostic middleware system with full type support. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
 
-## Core Concept
+## Fundamentals
 
 Everything in Dido is a module. Modules consist of a single `process()` method that accepts incoming data and transforms it into some output data.
 
@@ -164,6 +164,43 @@ const middleware = new LoopWhile(predicate, increment);
 
 await middleware.process(0);
 // 10
+```
+
+### Mediate
+
+Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
+
+```ts
+// Scenario: Performing an API request
+// TODO: Improve example
+
+// Types
+type Request = string;
+type Response = string;
+type Input = { request: Request };
+type Output = { request: Request; response: Response };
+
+// Request
+const prepareRequest = new Transform<Input, Request>((data) => {
+  return data.request;
+});
+const sendRequest = new Transform<Request, Response>((request) => {
+  return "Goodbye, World!";
+});
+const request = new Pipe(prepareRequest).next(sendRequest);
+
+// Mediator
+const mediator = new Transform<[Input, Response], Output>(
+  ([input, response]) => ({
+    request: input.request,
+    response: response,
+  })
+);
+
+const middleware = new Mediate(request, mediator);
+
+await middleware.process({ request: "Hello, World!" });
+// { request: 'Hello, World!', response: 'Goodbye, World!' }
 ```
 
 ### ParseJSON
