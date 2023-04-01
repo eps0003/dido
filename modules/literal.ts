@@ -6,7 +6,7 @@ import Module from "../module";
 export default class Literal<T> implements Module<unknown, T> {
   constructor(private value: T) {}
 
-  process(): T {
+  process(data: unknown): T {
     return this.value;
   }
 }

@@ -4,18 +4,18 @@ import Module from "../module";
 type ReadFileOptions = Parameters<typeof fs["readFile"]>[1];
 
 /**
- * Reads a file from the system and returns the Buffer.
+ * Reads a file from the system and returns its contents.
  */
 export default class ReadFile<Input> implements Module<Input, string> {
   constructor(
-    private fileName: Module<Input, string>,
+    private filePath: Module<Input, string>,
     private options?: Module<Input, ReadFileOptions>
   ) {}
 
   async process(data: Input): Promise<string> {
-    const fileName = await this.fileName.process(data);
+    const filePath = await this.filePath.process(data);
     const options = await this.options?.process(data);
-    const file = await fs.readFile(fileName, options);
+    const file = await fs.readFile(filePath, options);
     return file.toString();
   }
 }

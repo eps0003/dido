@@ -1,7 +1,7 @@
 import Module from "../module";
 
 /**
- * Runs modules at the same time, returning the input once all modules have finished processing.
+ * Processes modules at the same time, returning the input once all modules have finished processing.
  */
 export default class Fork<T> implements Module<T, T> {
   private modules: Module<T, unknown>[] = [];

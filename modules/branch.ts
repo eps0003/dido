@@ -5,7 +5,7 @@ type AddBranch<M, T> = M extends Module<infer Input, infer Output>
   : never;
 
 /**
- * Runs modules at the same time, returning the output of all modules once all modules have finished processing.
+ * Processes modules at the same time, returning the output of all modules once all modules have finished processing.
  */
 export default class Branch<Input, Output> implements Module<Input, Output> {
   private modules: Module<Input, unknown>[] = [];

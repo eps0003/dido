@@ -1,14 +1,11 @@
 import Module from "../module";
-import Literal from "./literal";
 
 /**
  * Reprocesses the module if an error is thrown up to a specified maximum number of retries.
  */
-export default class RetryOnError<Input, Output>
-  implements Module<Input, Output>
-{
+export default class Retry<Input, Output> implements Module<Input, Output> {
   constructor(
-    private maxRetries: Module<Input, number> = new Literal(3),
+    private maxRetries: Module<Input, number>,
     private module: Module<Input, Output>
   ) {}
 

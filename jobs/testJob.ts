@@ -14,7 +14,7 @@ export default new IfElse(
     [new Literal(0), new Literal(10)],
     new Pipe(new ConsoleLog<number>())
       .next(increment)
-      .next(new Wait(new Literal(1)))
+      .next(new Wait<number>(new Literal(1)))
   ),
   new Literal(15)
 );

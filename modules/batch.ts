@@ -4,17 +4,17 @@ import Module from "../module";
  * Splits the input array into batches of a specified size.
  */
 export default class Batch<T> implements Module<T[], T[][]> {
-  constructor(private chunkSize: Module<T[], number>) {}
+  constructor(private batchSize: Module<T[], number>) {}
 
   async process(data: T[]): Promise<T[][]> {
-    const chunks: T[][] = [];
-    const chunkSize = Math.floor(await this.chunkSize.process(data));
+    const batches: T[][] = [];
+    const batchSize = Math.floor(await this.batchSize.process(data));
 
-    for (let i = 0; i < data.length; i += chunkSize) {
-      const chunk = data.slice(i, i + chunkSize);
-      chunks.push(chunk);
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize);
+      batches.push(batch);
     }
 
-    return chunks;
+    return batches;
   }
 }

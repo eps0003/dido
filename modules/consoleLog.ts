@@ -1,7 +1,7 @@
 import Module from "../module";
 
 /**
- * Log the input to the console.
+ * Logs the input to the console.
  */
 export default class ConsoleLog<T> implements Module<T, T> {
   process(data: T): T {
