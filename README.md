@@ -268,6 +268,7 @@ Reprocesses the module if an error is thrown up to a specified maximum number of
 
 ```ts
 const maxRetries = new Literal(2);
+
 const consoleLog = new ConsoleLog<string>();
 const throwError = new Throw(new Literal(new Error("uh oh!")));
 const logRetries = new Pipe(consoleLog).next(throwError);
