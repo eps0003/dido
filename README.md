@@ -166,6 +166,19 @@ await middleware.process(0);
 // 10
 ```
 
+### Map
+
+Processes a module for all elements in the input array and returns the resulting array.
+
+```ts
+const double = new Transform<number, number>((data) => data * 2);
+
+const middleware = new Map(double);
+
+await middleware.process([0, 1, 2, 3, 4, 5]);
+// [ 0, 2, 4, 6, 8, 10 ]
+```
+
 ### Mediate
 
 Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
