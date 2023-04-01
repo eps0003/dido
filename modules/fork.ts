@@ -4,13 +4,13 @@ import Module from "../module";
  * Runs modules at the same time, returning the input once all modules have finished processing.
  */
 export default class Fork<T> implements Module<T, T> {
-  private modules: Module<T, T>[] = [];
+  private modules: Module<T, unknown>[] = [];
 
-  constructor(...modules: Module<T, T>[]) {
+  constructor(...modules: Module<T, unknown>[]) {
     this.modules = modules;
   }
 
-  add(module: Module<T, T>): Fork<T> {
+  add(module: Module<T, unknown>): Fork<T> {
     this.modules.push(module);
     return this;
   }
