@@ -77,6 +77,21 @@ Console output:
 Hello, World!
 ```
 
+### Flatten
+
+Flatten a multi-dimensional array by one dimension. For example, a three-dimensional array will flatten to two dimensions.
+
+```ts
+const middleware = new Flatten();
+
+await middleware.process([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8],
+]);
+// [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+```
+
 ### Fork
 
 Processes modules at the same time, returning the input once all modules have finished processing.
