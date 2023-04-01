@@ -185,7 +185,6 @@ Processes a module, then allows the result to be processed alongside the initial
 
 ```ts
 // Scenario: Performing an API request
-// TODO: Improve example
 
 // Types
 type Request = string;
@@ -198,6 +197,8 @@ const prepareRequest = new Transform<Input, Request>((data) => {
   return data.request;
 });
 const sendRequest = new Transform<Request, Response>((request) => {
+  // Imagine this sends an API request using the provided
+  // request data which responds with the following response
   return "Goodbye, World!";
 });
 const request = new Pipe(prepareRequest).next(sendRequest);
@@ -266,7 +267,25 @@ Hello, World!
 Reprocesses the module if an error is thrown up to a specified maximum number of retries.
 
 ```ts
-// TODO
+const maxRetries = new Literal(2);
+const consoleLog = new ConsoleLog<string>();
+const throwError = new Throw(new Literal(new Error("uh oh!")));
+const logRetries = new Pipe(consoleLog).next(throwError);
+
+const middleware = new Retry(maxRetries, logRetries);
+
+await middleware.process("Hello, World!");
+// *error is thrown*
+```
+
+Console output:
+
+```
+Hello, World!
+Hello, World!
+Hello, World!
+Error: uh oh!
+    at <stack trace>
 ```
 
 ### StringifyJSON
@@ -329,7 +348,7 @@ await middleware.process("Hello, World!");
 
 ### Validate
 
-Validates the input against a Zod schema.
+Validates the input against a [Zod](https://zod.dev/) schema.
 
 ```ts
 const schema = new Literal(z.string());
