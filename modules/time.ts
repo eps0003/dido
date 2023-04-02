@@ -1,25 +1,18 @@
 import Module from "../module";
 
-type TimedOutput<Output> = {
-  data: Output;
-  durationMs: number;
-};
-
 /**
- * Returns how long a module took to process.
+ * Processes the module and returns result along with how long it took to process in milliseconds.
  */
 export default class Time<Input, Output>
-  implements Module<Input, TimedOutput<Output>>
+  implements Module<Input, [Output, number]>
 {
   constructor(private module: Module<Input, Output>) {}
 
-  async process(data: Input): Promise<TimedOutput<Output>> {
+  async process(data: Input): Promise<[Output, number]> {
     const startTime = new Date().getTime();
     const result = await this.module.process(data);
     const endTime = new Date().getTime();
-    return {
-      data: result,
-      durationMs: endTime - startTime,
-    };
+    const duration = endTime - startTime;
+    return [result, duration];
   }
 }

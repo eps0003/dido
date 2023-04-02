@@ -335,6 +335,20 @@ Error: uh oh!
     at <stack trace>
 ```
 
+### Time
+
+Processes the module and returns result along with how long it took to process in milliseconds.
+
+```ts
+const wait = new Wait(new Literal(2));
+
+const middleware = new Time(wait);
+
+await middleware.process("Hello, World!");
+// *waits 2 seconds*
+// [ 'Hello, World!', 2012 ]
+```
+
 ### Transform
 
 Transforms the input using a transform function.
