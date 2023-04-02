@@ -18,6 +18,17 @@ All modules are built upon this foundation by combining existing modules and cus
 
 ## Modules
 
+| Type           | Modules                                                                                                                                                     |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Flatten](#flatten) • [Map](#map)                                                                                                         |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                                       |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [IfElse](#ifelse) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw) • [Validate](#validate)                                                                                 |
+| File System    | [ReadFile](#readfile)                                                                                                                                       |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                                                   |
+| Logging        | [ConsoleLog](#consolelog)                                                                                                                                   |
+| Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
+
 ### Batch
 
 Splits the input array into batches of a specified size.
