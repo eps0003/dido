@@ -10,7 +10,7 @@ export default class Fork<T> implements Module<T, T> {
     this.modules = modules;
   }
 
-  add(module: Module<T, unknown>): Fork<T> {
+  add(module: Module<T, unknown>): this {
     this.modules.push(module);
     return this;
   }

@@ -4,7 +4,7 @@ import Module from "../module";
 type ReadFileOptions = Parameters<typeof fs["readFile"]>[1];
 
 /**
- * Reads a file from the system and returns its contents.
+ * Reads a file from the file system and returns its contents.
  */
 export default class ReadFile<Input> implements Module<Input, string> {
   constructor(

@@ -1,7 +1,7 @@
 import Module from "../module";
 
 /**
- * Processes a module for all elements in the input array and returns the resulting array.
+ * Processes a module for all elements in the input array at the same time, then returns the resulting array once all elements have finished processing.
  */
 export default class Map<Input, Output> implements Module<Input[], Output[]> {
   constructor(private module: Module<Input, Output>) {}

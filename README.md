@@ -2,11 +2,11 @@
 
 ## Overview
 
-Dido (**D**ata **I**n, **D**ata **O**ut) is an simple yet powerful, modular, vendor-agnostic middleware system with full type support. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
+Dido (**D**ata **I**n, **D**ata **O**ut; pronounced 'dai-doh') is an simple yet powerful, modular, vendor-agnostic middleware system written in TypeScript. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
 
 ## Fundamentals
 
-Everything in Dido is a module. Modules consist of a single `process()` method that accepts incoming data and transforms it into some output data.
+Everything in Dido is a module. Modules consist of a single `process()` method that accepts data as input and transforms it into some output data.
 
 ```ts
 interface Module<Input, Output> {
@@ -29,7 +29,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Logging        | [ConsoleLog](#consolelog)                                                                                                                                   |
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
 
-### Batch
+### Batch [^](#modules)
 
 Splits the input array into batches of a specified size.
 
@@ -42,7 +42,7 @@ await middleware.process([1, 2, 3, 4, 5, 6, 7, 8]);
 // [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8 ] ]
 ```
 
-### Branch
+### Branch [^](#modules)
 
 Processes modules at the same time, returning the output of all modules once all modules have finished processing.
 
@@ -57,7 +57,7 @@ await middleware.process(4);
 // [ 6, 2, 8 ]
 ```
 
-### Catch
+### Catch [^](#modules)
 
 Catches and handles thrown errors.
 
@@ -71,7 +71,7 @@ await middleware.process("Hello, World!");
 // error caught
 ```
 
-### ConsoleLog
+### ConsoleLog [^](#modules)
 
 Logs the input to the console.
 
@@ -88,9 +88,9 @@ Console output:
 Hello, World!
 ```
 
-### Flatten
+### Flatten [^](#modules)
 
-Flatten a multi-dimensional array by one dimension. For example, a three-dimensional array will flatten to two dimensions.
+Flatten a multi-dimensional array by one level. For example, a three-dimensional array will flatten to two dimensions.
 
 ```ts
 const middleware = new Flatten();
@@ -103,7 +103,7 @@ await middleware.process([
 // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
 ```
 
-### Fork
+### Fork [^](#modules)
 
 Processes modules at the same time, returning the input once all modules have finished processing.
 
@@ -112,14 +112,15 @@ const add2 = new Transform<number, number>((data) => data + 2);
 const subtract2 = new Transform<number, number>((data) => data - 2);
 const multiply2 = new Transform<number, number>((data) => data * 2);
 
-const middleware = new Fork(add2).add(subtract2).add(multiply2);
-//                 new Fork(add2, subtract2, multiply2);
+const middleware = new Fork(add2, subtract2, multiply2);
+//                 new Fork(add2).add(subtract2).add(multiply2);
+//                 new Fork().add(add2).add(subtract2).add(multiply2);
 
 await middleware.process(4);
 // 4
 ```
 
-### Identity
+### Identity [^](#modules)
 
 Returns the input as output.
 
@@ -130,7 +131,7 @@ await middleware.process("Hello, World!");
 // Hello, World!
 ```
 
-### If
+### If [^](#modules)
 
 Conditionally processes the module if the predicate is true.
 
@@ -144,7 +145,7 @@ await middleware.process(4);
 // 6
 ```
 
-### IfElse
+### IfElse [^](#modules)
 
 Conditionally processes either module depending on the result of the predicate.
 
@@ -159,7 +160,7 @@ await middleware.process(4);
 // 8
 ```
 
-### Literal
+### Literal [^](#modules)
 
 Returns the value provided, discarding the input.
 
@@ -170,7 +171,7 @@ await middleware.process("Hello, World!");
 // Goodbye, World!
 ```
 
-### LoopIndex
+### LoopIndex [^](#modules)
 
 Repeatedly process the module in a for loop, passing the processed data between iterations.
 
@@ -178,7 +179,7 @@ Repeatedly process the module in a for loop, passing the processed data between 
 // TODO
 ```
 
-### LoopWhile
+### LoopWhile [^](#modules)
 
 Repeatedly process the module while the predicate is true, passing the processed data between iterations.
 
@@ -192,9 +193,9 @@ await middleware.process(0);
 // 10
 ```
 
-### Map
+### Map [^](#modules)
 
-Processes a module for all elements in the input array and returns the resulting array.
+Processes a module for all elements in the input array at the same time, then returns the resulting array once all elements have finished processing.
 
 ```ts
 const double = new Transform<number, number>((data) => data * 2);
@@ -205,7 +206,7 @@ await middleware.process([0, 1, 2, 3, 4, 5]);
 // [ 0, 2, 4, 6, 8, 10 ]
 ```
 
-### Mediate
+### Mediate [^](#modules)
 
 Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
 
@@ -243,7 +244,7 @@ await middleware.process({ request: "Hello, World!" });
 // { request: 'Hello, World!', response: 'Goodbye, World!' }
 ```
 
-### ParseJSON
+### ParseJSON [^](#modules)
 
 Parses a JSON string into an object.
 
@@ -254,7 +255,7 @@ await middleware.process('{"hello":"world!"}');
 // { hello: 'world!' }
 ```
 
-### Pipe
+### Pipe [^](#modules)
 
 Processes modules in succession, passing the output of each module to the next as input.
 
@@ -269,9 +270,9 @@ await middleware.process("Hello, World!");
 // World! Hello,
 ```
 
-### ReadFile
+### ReadFile [^](#modules)
 
-Reads a file from the system and returns its contents.
+Reads a file from the file system and returns its contents.
 
 ```ts
 const filePath = new Identity<string>();
@@ -288,7 +289,7 @@ await middleware.process("./example.txt");
 Hello, World!
 ```
 
-### Retry
+### Retry [^](#modules)
 
 Reprocesses the module if an error is thrown up to a specified maximum number of retries.
 
@@ -315,7 +316,7 @@ Error: uh oh!
     at <stack trace>
 ```
 
-### StringifyJSON
+### StringifyJSON [^](#modules)
 
 Converts the input into a JSON string.
 
@@ -326,7 +327,7 @@ await middleware.process({ hello: "world!" });
 // {"hello":"world!"}
 ```
 
-### Throw
+### Throw [^](#modules)
 
 Throws an error.
 
@@ -335,7 +336,7 @@ const error = new Literal(new Error("uh oh!"));
 
 const middleware = new Throw(error);
 
-await middleware.process("Hello World!");
+await middleware.process("Hello, World!");
 // *error is thrown*
 ```
 
@@ -346,7 +347,7 @@ Error: uh oh!
     at <stack trace>
 ```
 
-### Time
+### Time [^](#modules)
 
 Processes the module and returns result along with how long it took to process in milliseconds.
 
@@ -360,20 +361,20 @@ await middleware.process("Hello, World!");
 // [ 'Hello, World!', 2012 ]
 ```
 
-### Transform
+### Transform [^](#modules)
 
 Transforms the input using a transform function.
 
 ```ts
 const transform = (data: number): number => data + 2;
 
-const middleware = new Transform<number, number>(transform);
+const middleware = new Transform(transform);
 
 await middleware.process(4);
 // 6
 ```
 
-### Wait
+### Wait [^](#modules)
 
 Waits a specified number of seconds.
 
@@ -387,7 +388,7 @@ await middleware.process("Hello, World!");
 // Hello, World!
 ```
 
-### Validate
+### Validate [^](#modules)
 
 Validates the input against a [Zod](https://zod.dev/) schema.
 
