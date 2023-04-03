@@ -1,20 +1,21 @@
 import Module from "../module";
 
-type AddBranch<M, T> = M extends Branch<infer Input, infer Output>
-  ? Branch<Input, Output extends unknown[] ? [...Output, T] : [Output, T]>
+type AddBranch<M, T> = M extends Branch<infer A, infer B, infer Output>
+  ? Branch<A, B, Output extends unknown[] ? [...Output, T] : [Output, T]>
   : never;
-
-type Tuple<Output> = Output extends unknown[] ? Output : [Output];
 
 /**
  * Processes modules at the same time, returning the output of all modules once all modules have finished processing.
  */
-export default class Branch<Input, Output>
-  implements Module<Input, Tuple<Output>>
+export default class Branch<
+  Input,
+  FirstOutput,
+  Output extends unknown[] = [FirstOutput]
+> implements Module<Input, Output>
 {
   private modules: Module<Input, unknown>[] = [];
 
-  constructor(module: Module<Input, Output>) {
+  constructor(module: Module<Input, FirstOutput>) {
     this.modules.push(module);
   }
 
@@ -23,9 +24,9 @@ export default class Branch<Input, Output>
     return this as unknown as AddBranch<this, T>;
   }
 
-  async process(data: Input): Promise<Tuple<Output>> {
+  async process(data: Input): Promise<Output> {
     const promises = this.modules.map((module) => module.process(data));
     const results = await Promise.all(promises);
-    return results as Tuple<Output>;
+    return results as Output;
   }
 }
