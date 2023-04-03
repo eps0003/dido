@@ -20,14 +20,15 @@ All modules are built upon this foundation by combining existing modules and cus
 
 | Type           | Modules                                                                                                                                                     |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Flatten](#flatten) • [Map](#map)                                                                                                         |
+| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                                                                         |
 | Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                                       |
 | Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [IfElse](#ifelse) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw) • [Validate](#validate)                                                                                 |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                                         |
 | File System    | [ReadFile](#readfile)                                                                                                                                       |
 | JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                                                   |
 | Logging        | [Log](#log)                                                                                                                                                 |
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
+| Validation     | [Validate](#validate)                                                                                                                                       |
 
 ### Batch [^](#modules)
 
@@ -197,17 +198,36 @@ await middleware.process(0);
 // 10
 ```
 
-### Map [^](#modules)
+### MapAsync [^](#modules)
 
 Processes a module for all elements in the input array at the same time, then returns the resulting array once all elements have finished processing.
 
 ```ts
 const double = new Transform<number, number>((data) => data * 2);
+const wait = new Wait(new Literal(2));
+const doubleAndWait = new Pipe(double).next(wait);
 
-const middleware = new Map(double);
+const middleware = new MapAsync(doubleAndWait);
 
-await middleware.process([0, 1, 2, 3, 4, 5]);
-// [ 0, 2, 4, 6, 8, 10 ]
+await middleware.process([1, 2, 3, 4, 5]);
+// *waits 2 seconds*
+// [ 2, 4, 6, 8, 10 ]
+```
+
+### MapSync [^](#modules)
+
+Processes a module for all elements in the input array in succession, then returns the resulting array once all elements have finished processing.
+
+```ts
+const double = new Transform<number, number>((data) => data * 2);
+const wait = new Wait(new Literal(2));
+const doubleAndWait = new Pipe(double).next(wait);
+
+const middleware = new MapSync(doubleAndWait);
+
+await middleware.process([1, 2, 3, 4, 5]);
+// *waits 10 seconds*
+// [ 2, 4, 6, 8, 10 ]
 ```
 
 ### Mediate [^](#modules)
