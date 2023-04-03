@@ -26,7 +26,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw) • [Validate](#validate)                                                                                 |
 | File System    | [ReadFile](#readfile)                                                                                                                                       |
 | JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                                                   |
-| Logging        | [ConsoleLog](#consolelog)                                                                                                                                   |
+| Logging        | [Log](#log)                                                                                                                                                 |
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
 
 ### Batch [^](#modules)
@@ -71,14 +71,17 @@ await middleware.process("Hello, World!");
 // error caught
 ```
 
-### ConsoleLog [^](#modules)
+### Log [^](#modules)
 
-Logs the input to the console.
+Logs the result of the module to the console if specified, otherwise, logs the input to the console. The input is returned as output.
 
 ```ts
-const middleware = new ConsoleLog();
+const middleware1 = new Log();
+await middleware1.process("Hello, World!");
+// Hello, World!
 
-await middleware.process("Hello, World!");
+const middleware2 = new Log(new Literal("Goodbye, World!"));
+await middleware2.process("Hello, World!");
 // Hello, World!
 ```
 
@@ -86,6 +89,7 @@ Console output:
 
 ```
 Hello, World!
+Goodbye, World!
 ```
 
 ### Flatten [^](#modules)
@@ -296,11 +300,13 @@ Reprocesses the module if an error is thrown up to a specified maximum number of
 ```ts
 const maxRetries = new Literal(2);
 
-const consoleLog = new ConsoleLog<string>();
+const logAttempt = new Log();
 const throwError = new Throw(new Literal(new Error("uh oh!")));
-const logRetries = new Pipe(consoleLog).next(throwError);
+const badModule = new Pipe(logAttempt).next(throwError);
 
-const middleware = new Retry(maxRetries, logRetries);
+const logRetry = new Log(new Literal("retry"));
+
+const middleware = new Retry(maxRetries, badModule).onRetry(logRetry);
 
 await middleware.process("Hello, World!");
 // *error is thrown*
@@ -309,9 +315,11 @@ await middleware.process("Hello, World!");
 Console output:
 
 ```
-Hello, World!
-Hello, World!
-Hello, World!
+Hello World!
+retry
+Hello World!
+retry
+Hello World!
 Error: uh oh!
     at <stack trace>
 ```
