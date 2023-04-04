@@ -19,7 +19,7 @@ describe("Mediate", () => {
       expect(result).to.equal("Hello, World!");
     });
 
-    it("processes the modules in the constructor only once", async () => {
+    it("processes the modules only once", async () => {
       const module = new Literal(1);
       const mediate = new Literal(1);
 
@@ -30,8 +30,8 @@ describe("Mediate", () => {
 
       await mediator.process(1);
 
-      expect(moduleProcess.calledOnce).to.be.true;
-      expect(mediateProcess.calledOnce).to.be.true;
+      expect(moduleProcess.calledOnce, "module processed once").to.be.true;
+      expect(mediateProcess.calledOnce, "mediator processed once").to.be.true;
     });
   });
 });
