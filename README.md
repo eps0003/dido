@@ -1,10 +1,8 @@
 # Dido
 
-## Overview
-
 Dido (**D**ata **I**n, **D**ata **O**ut; pronounced 'dai-doh') is an simple yet powerful, modular, vendor-agnostic middleware system written in TypeScript. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
 
-## Fundamentals
+## Overview
 
 Everything in Dido is a module. Modules consist of a single `process()` method that accepts data as input and transforms it into some output data.
 
@@ -30,7 +28,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
 | Validation     | [Validate](#validate)                                                                                                                                       |
 
-### Batch [^](#modules)
+### Batch
 
 Splits the input array into batches of a specified size.
 
@@ -43,7 +41,7 @@ await middleware.process([1, 2, 3, 4, 5, 6, 7, 8]);
 // [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8 ] ]
 ```
 
-### Branch [^](#modules)
+### Branch
 
 Processes modules at the same time, returning the output of all modules once all modules have finished processing.
 
@@ -58,7 +56,7 @@ await middleware.process(4);
 // [ 6, 2, 8 ]
 ```
 
-### Catch [^](#modules)
+### Catch
 
 Catches and handles thrown errors.
 
@@ -72,7 +70,7 @@ await middleware.process("Hello, World!");
 // error caught
 ```
 
-### Log [^](#modules)
+### Log
 
 Logs the result of the module to the console if specified, otherwise, logs the input to the console. The input is returned as output.
 
@@ -93,7 +91,7 @@ Hello, World!
 Goodbye, World!
 ```
 
-### Flatten [^](#modules)
+### Flatten
 
 Flatten a multi-dimensional array by one level. For example, a three-dimensional array will flatten to two dimensions.
 
@@ -108,7 +106,7 @@ await middleware.process([
 // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
 ```
 
-### Fork [^](#modules)
+### Fork
 
 Processes modules at the same time, returning the input once all modules have finished processing.
 
@@ -125,7 +123,7 @@ await middleware.process(4);
 // 4
 ```
 
-### Identity [^](#modules)
+### Identity
 
 Returns the input as output.
 
@@ -136,7 +134,7 @@ await middleware.process("Hello, World!");
 // Hello, World!
 ```
 
-### If [^](#modules)
+### If
 
 Conditionally processes the module if the predicate is true.
 
@@ -150,7 +148,7 @@ await middleware.process(4);
 // 6
 ```
 
-### IfElse [^](#modules)
+### IfElse
 
 Conditionally processes either module depending on the result of the predicate.
 
@@ -165,7 +163,7 @@ await middleware.process(4);
 // 8
 ```
 
-### Literal [^](#modules)
+### Literal
 
 Returns the value provided, discarding the input.
 
@@ -176,7 +174,7 @@ await middleware.process("Hello, World!");
 // Goodbye, World!
 ```
 
-### LoopIndex [^](#modules)
+### LoopIndex
 
 Repeatedly process the module in a for loop, passing the processed data between iterations.
 
@@ -184,7 +182,7 @@ Repeatedly process the module in a for loop, passing the processed data between 
 // TODO
 ```
 
-### LoopWhile [^](#modules)
+### LoopWhile
 
 Repeatedly process the module while the predicate is true, passing the processed data between iterations.
 
@@ -198,7 +196,7 @@ await middleware.process(0);
 // 10
 ```
 
-### MapAsync [^](#modules)
+### MapAsync
 
 Processes a module for all elements in the input array at the same time, then returns the resulting array once all elements have finished processing.
 
@@ -214,7 +212,7 @@ await middleware.process([1, 2, 3, 4, 5]);
 // [ 2, 4, 6, 8, 10 ]
 ```
 
-### MapSync [^](#modules)
+### MapSync
 
 Processes a module for all elements in the input array in succession, then returns the resulting array once all elements have finished processing.
 
@@ -230,7 +228,7 @@ await middleware.process([1, 2, 3, 4, 5]);
 // [ 2, 4, 6, 8, 10 ]
 ```
 
-### Mediate [^](#modules)
+### Mediate
 
 Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
 
@@ -268,7 +266,7 @@ await middleware.process({ request: "Hello, World!" });
 // { request: 'Hello, World!', response: 'Goodbye, World!' }
 ```
 
-### ParseJSON [^](#modules)
+### ParseJSON
 
 Parses a JSON string into an object.
 
@@ -279,7 +277,7 @@ await middleware.process('{"hello":"world!"}');
 // { hello: 'world!' }
 ```
 
-### Pipe [^](#modules)
+### Pipe
 
 Processes modules in succession, passing the output of each module to the next as input.
 
@@ -294,7 +292,7 @@ await middleware.process("Hello, World!");
 // World! Hello,
 ```
 
-### ReadFile [^](#modules)
+### ReadFile
 
 Reads a file from the file system and returns its contents.
 
@@ -313,7 +311,7 @@ await middleware.process("./example.txt");
 Hello, World!
 ```
 
-### Retry [^](#modules)
+### Retry
 
 Reprocesses the module if an error is thrown up to a specified maximum number of retries.
 
@@ -344,7 +342,7 @@ Error: uh oh!
     at <stack trace>
 ```
 
-### StringifyJSON [^](#modules)
+### StringifyJSON
 
 Converts the input into a JSON string.
 
@@ -355,7 +353,7 @@ await middleware.process({ hello: "world!" });
 // {"hello":"world!"}
 ```
 
-### Throw [^](#modules)
+### Throw
 
 Throws an error.
 
@@ -375,7 +373,7 @@ Error: uh oh!
     at <stack trace>
 ```
 
-### Time [^](#modules)
+### Time
 
 Processes the module and returns result along with how long it took to process in milliseconds.
 
@@ -389,7 +387,7 @@ await middleware.process("Hello, World!");
 // [ 'Hello, World!', 2012 ]
 ```
 
-### Transform [^](#modules)
+### Transform
 
 Transforms the input using a transform function.
 
@@ -402,7 +400,7 @@ await middleware.process(4);
 // 6
 ```
 
-### Wait [^](#modules)
+### Wait
 
 Waits a specified number of seconds.
 
@@ -416,7 +414,7 @@ await middleware.process("Hello, World!");
 // Hello, World!
 ```
 
-### Validate [^](#modules)
+### Validate
 
 Validates the input against a [Zod](https://zod.dev/) schema.
 
