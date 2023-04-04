@@ -24,7 +24,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                                         |
 | File System    | [ReadFile](#readfile)                                                                                                                                       |
 | JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                                                   |
-| Logging        | [Log](#log)                                                                                                                                                 |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                                           |
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
 | Validation     | [Validate](#validate)                                                                                                                                       |
 
@@ -89,6 +89,26 @@ Console output:
 ```
 Hello, World!
 Goodbye, World!
+```
+
+### LogTime
+
+Processes the module and logs how long it took to process when finished, then returns the result of the module.
+
+```ts
+const wait = new Wait(new Literal(2));
+
+const middleware = new LogTime(wait);
+
+await middleware.process("Hello, World!");
+// *waits 2 seconds*
+// Hello, World!
+```
+
+Console output:
+
+```
+2.016 seconds
 ```
 
 ### Flatten
