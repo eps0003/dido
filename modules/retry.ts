@@ -19,12 +19,14 @@ export class Retry<Input, Output> implements Module<Input, Output> {
 
   async process(data: Input): Promise<Output> {
     let retries = 0;
-    const maxRetries = await this.maxRetries.process(data);
+    let maxRetries: number;
 
     while (true) {
       try {
         return await this.module.process(data);
       } catch (error) {
+        maxRetries ??= await this.maxRetries.process(data);
+
         if (retries >= maxRetries) {
           throw error;
         }

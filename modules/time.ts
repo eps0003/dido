@@ -9,10 +9,11 @@ export class Time<Input, Output> implements Module<Input, TimeOutput<Output>> {
   constructor(private module: Module<Input, Output>) {}
 
   async process(data: Input): Promise<TimeOutput<Output>> {
-    const startTime = new Date().getTime();
+    const startTime = Date.now();
     const result = await this.module.process(data);
-    const endTime = new Date().getTime();
-    const duration = endTime - startTime;
-    return { data: result, duration };
+    return {
+      data: result,
+      duration: Date.now() - startTime,
+    };
   }
 }

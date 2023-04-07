@@ -13,8 +13,10 @@ export class ReadFile<Input> implements Module<Input, string> {
   ) {}
 
   async process(data: Input): Promise<string> {
-    const filePath = await this.filePath.process(data);
-    const options = await this.options?.process(data);
+    const [filePath, options] = await Promise.all([
+      this.filePath.process(data),
+      this.options?.process(data),
+    ]);
     const file = await fs.readFile(filePath, options);
     return file.toString();
   }
