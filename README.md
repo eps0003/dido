@@ -16,17 +16,17 @@ All modules are built upon this foundation by combining existing modules and cus
 
 ## Modules
 
-| Type           | Modules                                                                                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                                                                         |
-| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                                       |
-| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [IfElse](#ifelse) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                                         |
-| File System    | [ReadFile](#readfile)                                                                                                                                       |
-| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                                                   |
-| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                                           |
-| Time           | [Time](#time) • [Wait](#wait)                                                                                                                               |
-| Validation     | [Validate](#validate)                                                                                                                                       |
+| Type           | Modules                                                                                                                                 |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                                                     |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                   |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                     |
+| File System    | [ReadFile](#readfile)                                                                                                                   |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                               |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                       |
+| Time           | [Time](#time) • [Wait](#wait)                                                                                                           |
+| Validation     | [Validate](#validate)                                                                                                                   |
 
 ### Batch
 
@@ -156,31 +156,17 @@ await middleware.process("Hello, World!");
 
 ### If
 
-Conditionally processes the module if the predicate is true.
+Conditionally processes modules depending on the result of the predicate.
 
 ```ts
 const predicate = new Literal(true);
 const add2 = new Transform<number, number>((data) => data + 2);
+const add4 = new Transform<number, number>((data) => data + 4);
 
-const middleware = new If(predicate, add2);
+const middleware = new If(predicate).onTrue(add2).onFalse(add4);
 
 await middleware.process(4);
 // 6
-```
-
-### IfElse
-
-Conditionally processes either module depending on the result of the predicate.
-
-```ts
-const predicate = new Literal(false);
-const add2 = new Transform<number, number>((data) => data + 2);
-const add4 = new Transform<number, number>((data) => data + 4);
-
-const middleware = new IfElse(predicate, add2, add4);
-
-await middleware.process(4);
-// 8
 ```
 
 ### Literal
