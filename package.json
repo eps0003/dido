@@ -1,6 +1,22 @@
 {
-  "name": "middleware",
+  "name": "dido",
   "version": "1.0.0",
+  "description": "Simple yet powerful, modular, vendor-agnostic middleware system written in TypeScript",
+  "author": {
+    "name": "Jordan Epstein",
+    "url": "https://epsi.dev/"
+  },
+  "keywords": [
+    "middleware"
+  ],
+  "homepage": "https://github.com/eps0003/dido#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eps0003/dido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eps0003/dido/issues"
+  },
   "scripts": {
     "test": "nyc mocha -r ts-node/register 'tests/**/*.test.ts'"
   },
