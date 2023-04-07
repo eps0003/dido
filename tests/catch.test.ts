@@ -18,7 +18,10 @@ describe("Catch", () => {
       const throwErrorProcess = sinon.spy(throwError, "process");
       const handleErrorProcess = sinon.spy(handleError, "process");
 
-      const module = new Catch(throwError, handleError);
+      const module = new Catch({
+        module: throwError,
+        errorHandler: handleError,
+      });
 
       const result = await module.process("Hello, World!");
 
@@ -34,7 +37,10 @@ describe("Catch", () => {
       const throwErrorProcess = sinon.spy(throwError, "process");
       const handleErrorProcess = sinon.spy(handleError, "process");
 
-      const module = new Catch(throwError, handleError);
+      const module = new Catch({
+        module: throwError,
+        errorHandler: handleError,
+      });
 
       const result = await module.process("Hello, World!");
 
@@ -47,7 +53,10 @@ describe("Catch", () => {
       const doSomething = new Throw(new Literal("Error 1"));
       const handleError = new Throw(new Literal("Error 2"));
 
-      const module = new Catch(doSomething, handleError);
+      const module = new Catch({
+        module: doSomething,
+        errorHandler: handleError,
+      });
 
       const promise = module.process("Hello, World!");
 

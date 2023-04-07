@@ -9,18 +9,20 @@ export class Mediate<Input, ModuleOutput, Output>
   implements Module<Input, Output>
 {
   constructor(
-    private module: Module<Input, ModuleOutput>,
-    private mediate: Module<[Input, ModuleOutput], Output>
+    private props: {
+      module: Module<Input, ModuleOutput>;
+      mediator: Module<[inputData: Input, moduleOutput: ModuleOutput], Output>;
+    }
   ) {}
 
   async process(data: Input): Promise<Output> {
-    return await new Pipe(this.module)
+    return await new Pipe(this.props.module)
       .next(
         new Transform((moduleData): [Input, ModuleOutput] => {
           return [data, moduleData];
         })
       )
-      .next(this.mediate)
+      .next(this.props.mediator)
       .process(data);
   }
 }

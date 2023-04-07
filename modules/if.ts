@@ -1,37 +1,33 @@
 import { Module } from "../module";
-import { Literal } from "./literal";
+
+type TrueProps<T> = {
+  predicate: Module<T, boolean>;
+  onTrue: Module<T, T>;
+  onFalse?: Module<T, T>;
+};
+
+type FalseProps<T> = {
+  predicate: Module<T, boolean>;
+  onTrue?: Module<T, T>;
+  onFalse: Module<T, T>;
+};
 
 /**
  * Conditionally processes modules depending on the result of the predicate.
  */
 export class If<T> implements Module<T, T> {
-  private trueModule?: Module<T, T>;
-  private falseModule?: Module<T, T>;
-
-  constructor(private predicate: Module<T, boolean>) {}
-
-  onTrue(module: Module<T, T>): this {
-    this.trueModule = module;
-    return this;
-  }
-
-  onFalse(module: Module<T, T>): this {
-    this.falseModule = module;
-    return this;
-  }
+  constructor(private props: TrueProps<T> | FalseProps<T>) {}
 
   async process(data: T): Promise<T> {
-    if (await this.predicate.process(data)) {
-      if (this.trueModule) {
-        return await this.trueModule.process(data);
+    if (await this.props.predicate.process(data)) {
+      if (this.props.onTrue) {
+        return await this.props.onTrue.process(data);
       }
     } else {
-      if (this.falseModule) {
-        return await this.falseModule.process(data);
+      if (this.props.onFalse) {
+        return await this.props.onFalse.process(data);
       }
     }
     return data;
   }
 }
-
-new If(new Literal(true)).onTrue(new Literal("hi")).onFalse(new Literal("bye"));

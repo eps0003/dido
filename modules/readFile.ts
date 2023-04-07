@@ -8,14 +8,16 @@ type ReadFileOptions = Parameters<typeof fs["readFile"]>[1];
  */
 export class ReadFile<Input> implements Module<Input, string> {
   constructor(
-    private filePath: Module<Input, string>,
-    private options?: Module<Input, ReadFileOptions>
+    private props: {
+      filePath: Module<Input, string>;
+      options?: Module<Input, ReadFileOptions>;
+    }
   ) {}
 
   async process(data: Input): Promise<string> {
     const [filePath, options] = await Promise.all([
-      this.filePath.process(data),
-      this.options?.process(data),
+      this.props.filePath.process(data),
+      this.props.options?.process(data),
     ]);
     const file = await fs.readFile(filePath, options);
     return file.toString();

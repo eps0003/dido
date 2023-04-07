@@ -13,7 +13,10 @@ describe("Mediate", () => {
         return `${a}, ${b}!`;
       });
 
-      const mediator = new Mediate(module, mediate);
+      const mediator = new Mediate({
+        module: module,
+        mediator: mediate,
+      });
 
       const result = await mediator.process("Hello");
 
@@ -27,7 +30,10 @@ describe("Mediate", () => {
       const moduleProcess = sinon.stub(module, "process");
       const mediateProcess = sinon.stub(mediate, "process");
 
-      const mediator = new Mediate(module, mediate);
+      const mediator = new Mediate({
+        module: module,
+        mediator: mediate,
+      });
 
       await mediator.process(1);
 

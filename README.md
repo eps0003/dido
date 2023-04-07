@@ -7,27 +7,27 @@ Dido (**D**ata **I**n, **D**ata **O**ut; pronounced 'dai-doh') is an simple yet 
 Everything in Dido is a module. Modules consist of a single `process()` method that accepts data as input and transforms it into some output data.
 
 ```ts
-interface Module<Input, Output> {
-  process: (data: Input) => Output | Promise<Output>;
-}
+type Module<Input, Output> = {
+  process(data: Input): Output | Promise<Output>;
+};
 ```
 
 All modules are built upon this foundation by combining existing modules and custom logic to create increasing levels of abstraction. As the middleware grows in complexity, groups of modules that are used together to perform a common job can be extracted into their own modules for reuse and maintainability.
 
 ## Modules
 
-| Type           | Modules                                                                                                                                 |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                                                     |
-| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                   |
-| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                     |
-| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                                                         |
-| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                                                     |
-| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                               |
-| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                       |
-| Time           | [Time](#time) • [Wait](#wait)                                                                                                           |
-| Validation     | [Validate](#validate)                                                                                                                   |
+| Type           | Modules                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                 |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                               |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe) |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                 |
+| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                     |
+| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                 |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                           |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                   |
+| Time           | [Time](#time) • [Wait](#wait)                                                                       |
+| Validation     | [Validate](#validate)                                                                               |
 
 ### Batch
 
@@ -62,10 +62,10 @@ await middleware.process(4);
 Catches and handles thrown errors.
 
 ```ts
-const throwError = new Throw(new Literal("error thrown"));
-const handleError = new Literal("error caught");
-
-const middleware = new Catch(throwError, handleError);
+const middleware = new Catch({
+  module: new Throw(new Literal("error thrown")),
+  errorHandler: new Literal("error caught"),
+});
 
 await middleware.process("Hello, World!");
 // error caught
@@ -86,8 +86,8 @@ Performs an HTTP request and returns the response as JSON.
 ```ts
 const middleware = new FetchJSON();
 
-await middleware.process("https://example.com/api/data");
-// { ... }
+await middleware.process("https://jsonplaceholder.typicode.com/posts/1");
+// { id: 1, title: '...', body: '...', userId: 1 }
 ```
 
 ### FetchText
@@ -97,8 +97,8 @@ Performs an HTTP request and returns the response as text.
 ```ts
 const middleware = new FetchText();
 
-await middleware.process("https://example.com/api/lorem");
-// Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+await middleware.process("https://www.google.com/");
+// <!doctype html> ... </html>
 ```
 
 ### Log
@@ -127,9 +127,9 @@ Goodbye, World!
 Processes the module and logs how long it took to process when finished, then returns the result of the module.
 
 ```ts
-const wait = new Wait(new Literal(2));
-
-const middleware = new LogTime(wait);
+const middleware = new LogTime({
+  module: new Wait(new Literal(2)),
+});
 
 await middleware.process("Hello, World!");
 // *waits 2 seconds*
@@ -190,11 +190,11 @@ await middleware.process("Hello, World!");
 Conditionally processes modules depending on the result of the predicate.
 
 ```ts
-const predicate = new Literal(true);
-const add2 = new Transform<number, number>((data) => data + 2);
-const add4 = new Transform<number, number>((data) => data + 4);
-
-const middleware = new If(predicate).onTrue(add2).onFalse(add4);
+const middleware = new If({
+  predicate: new Literal(true),
+  onTrue: new Transform<number, number>((data) => data + 2),
+  onFalse: new Transform<number, number>((data) => data + 4),
+});
 
 await middleware.process(4);
 // 6
@@ -211,23 +211,15 @@ await middleware.process("Hello, World!");
 // Goodbye, World!
 ```
 
-### LoopIndex
-
-Repeatedly process the module in a for loop, passing the processed data between iterations.
-
-```ts
-// TODO
-```
-
-### LoopWhile
+### Loop
 
 Repeatedly process the module while the predicate is true, passing the processed data between iterations.
 
 ```ts
-const predicate = new Transform<number, boolean>((data) => data < 10);
-const increment = new Transform<number, number>((data) => data + 1);
-
-const middleware = new LoopWhile(predicate, increment);
+const middleware = new Loop<number>({
+  predicate: new Transform((data) => data < 10),
+  module: new Transform((data) => data + 1),
+});
 
 await middleware.process(0);
 // 10
@@ -270,37 +262,33 @@ await middleware.process([1, 2, 3, 4, 5]);
 Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
 
 ```ts
-// Scenario: Performing an API request
+type Input = { postId: number };
+type Output = { postId: number; post: Post };
+type Post = z.infer<typeof schema>;
 
-// Types
-type Request = string;
-type Response = string;
-type Input = { request: Request };
-type Output = { request: Request; response: Response };
-
-// Request
-const prepareRequest = new Transform<Input, Request>((data) => {
-  return data.request;
+const schema = z.object({
+  id: z.number(),
+  title: z.string(),
+  body: z.string(),
+  userId: z.number(),
 });
-const sendRequest = new Transform<Request, Response>((request) => {
-  // Imagine this sends an API request using the provided
-  // request data which responds with the following response
-  return "Goodbye, World!";
+
+const prepare = new Transform<Input, string>(({ postId }) => {
+  return `https://jsonplaceholder.typicode.com/posts/${postId}`;
 });
-const request = new Pipe(prepareRequest).next(sendRequest);
+const fetch = new FetchJSON();
+const validate = new Validate(new Literal(schema));
 
-// Mediator
-const mediator = new Transform<[Input, Response], Output>(
-  ([input, response]) => ({
-    request: input.request,
-    response: response,
-  })
-);
+const middleware = new Mediate<Input, Post, Output>({
+  module: new Pipe(prepare).next(fetch).next(validate),
+  mediator: new Transform(([input, response]) => ({
+    postId: input.postId,
+    post: response,
+  })),
+});
 
-const middleware = new Mediate(request, mediator);
-
-await middleware.process({ request: "Hello, World!" });
-// { request: 'Hello, World!', response: 'Goodbye, World!' }
+await middleware.process({ postId: 1 });
+// { postId: 1, post: { id: 1, title: '...', body: '...', userId: 1 } }
 ```
 
 ### ParseJSON
@@ -334,15 +322,15 @@ await middleware.process("Hello, World!");
 Reads a file from the file system and returns its contents.
 
 ```ts
-const filePath = new Identity<string>();
+const middleware = new ReadFile({
+  filePath: new Identity(),
+});
 
-const middleware = new ReadFile(filePath);
-
-await middleware.process("./example.txt");
+await middleware.process("./file.txt");
 // Hello, World!
 ```
 
-`./example.txt`:
+`./file.txt`:
 
 ```
 Hello, World!
@@ -353,15 +341,14 @@ Hello, World!
 Reprocesses the module if an error is thrown up to a specified maximum number of retries.
 
 ```ts
-const maxRetries = new Literal(2);
-
 const logAttempt = new Log();
 const throwError = new Throw(new Literal(new Error("uh oh!")));
-const badModule = new Pipe(logAttempt).next(throwError);
 
-const logRetry = new Log(new Literal("retry"));
-
-const middleware = new Retry(maxRetries, badModule).onRetry(logRetry);
+const middleware = new Retry({
+  maxRetries: new Literal(2),
+  module: new Pipe(logAttempt).next(throwError),
+  onRetry: new Log(new Literal("retry")),
+});
 
 await middleware.process("Hello, World!");
 // *error is thrown*
@@ -421,7 +408,7 @@ const middleware = new Time(wait);
 
 await middleware.process("Hello, World!");
 // *waits 2 seconds*
-// [ 'Hello, World!', 2012 ]
+// { data: 'Hello, World!', duration: 2012 }
 ```
 
 ### Transform
@@ -469,17 +456,22 @@ await middleware.process("Hello, World!");
 Writes a file to the file system, then returns the input.
 
 ```ts
-const middleware = new WriteFile<string>(
-  new Literal("./data.txt"),
-  new Identity()
-);
+const append = new WriteFile<string>({
+  filePath: new Literal("./exorcise.txt"),
+  fileData: new Transform((data) => data + "\n"),
+  options: new Literal({ flag: "a" }),
+});
 
-await middleware.process("Hello, World!");
-// Hello, World!
+const middleware = new Pipe(append).next(append).next(append);
+
+const result = await middleware.process("Beetlejuice");
+// Beetlejuice
 ```
 
-`./data.txt`:
+`./exorcise.txt`:
 
 ```
-Hello, World!
+Beetlejuice
+Beetlejuice
+Beetlejuice
 ```

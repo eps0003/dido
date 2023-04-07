@@ -14,7 +14,11 @@ describe("If", () => {
       const trueModuleProcess = sinon.spy(trueModule, "process");
       const falseModuleProcess = sinon.spy(falseModule, "process");
 
-      const module = new If(predicate).onTrue(trueModule).onFalse(falseModule);
+      const module = new If({
+        predicate: predicate,
+        onTrue: trueModule,
+        onFalse: falseModule,
+      });
 
       const result = await module.process(4);
 
@@ -33,7 +37,11 @@ describe("If", () => {
       const trueModuleProcess = sinon.spy(trueModule, "process");
       const falseModuleProcess = sinon.spy(falseModule, "process");
 
-      const module = new If(predicate).onTrue(trueModule).onFalse(falseModule);
+      const module = new If({
+        predicate: predicate,
+        onTrue: trueModule,
+        onFalse: falseModule,
+      });
 
       const result = await module.process(4);
 
@@ -50,7 +58,10 @@ describe("If", () => {
 
       const falseModuleProcess = sinon.spy(falseModule, "process");
 
-      const module = new If(predicate).onFalse(falseModule);
+      const module = new If({
+        predicate: predicate,
+        onFalse: falseModule,
+      });
 
       const result = await module.process(4);
 
@@ -65,7 +76,10 @@ describe("If", () => {
 
       const trueModuleProcess = sinon.spy(trueModule, "process");
 
-      const module = new If(predicate).onTrue(trueModule);
+      const module = new If({
+        predicate: predicate,
+        onTrue: trueModule,
+      });
 
       const result = await module.process(4);
 

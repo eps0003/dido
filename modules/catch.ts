@@ -1,21 +1,21 @@
 import { Module } from "../module";
 
-export type CatchOutput<T> = { data: T; error: unknown };
-
 /**
  * Catches and handles thrown errors.
  */
 export class Catch<Input, Output> implements Module<Input, Output> {
   constructor(
-    private module: Module<Input, Output>,
-    private handleError: Module<CatchOutput<Input>, Output>
+    private props: {
+      module: Module<Input, Output>;
+      errorHandler: Module<{ data: Input; error: unknown }, Output>;
+    }
   ) {}
 
   async process(data: Input): Promise<Output> {
     try {
-      return await this.module.process(data);
+      return await this.props.module.process(data);
     } catch (error) {
-      return await this.handleError.process({ data, error });
+      return await this.props.errorHandler.process({ data, error });
     }
   }
 }
