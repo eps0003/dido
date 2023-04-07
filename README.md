@@ -23,6 +23,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
 | Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                     |
 | File System    | [ReadFile](#readfile)                                                                                                                   |
+| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                                                     |
 | JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                               |
 | Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                       |
 | Time           | [Time](#time) • [Wait](#wait)                                                                                                           |
@@ -68,6 +69,36 @@ const middleware = new Catch(throwError, handleError);
 
 await middleware.process("Hello, World!");
 // error caught
+```
+
+### Fetch
+
+Performs an HTTP request and returns the response object.
+
+```ts
+// TODO
+```
+
+### FetchJSON
+
+Performs an HTTP request and returns the response as JSON.
+
+```ts
+const middleware = new FetchJSON();
+
+await middleware.process("https://example.com/api/data");
+// { ... }
+```
+
+### FetchText
+
+Performs an HTTP request and returns the response as text.
+
+```ts
+const middleware = new FetchText();
+
+await middleware.process("https://example.com/api/lorem");
+// Lorem ipsum dolor sit amet, consectetur adipiscing elit...
 ```
 
 ### Log
