@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Processes modules in succession, passing the output of each module to the next as input.
  */
-export default class Pipe<Input, Output> implements Module<Input, Output> {
+export class Pipe<Input, Output> implements Module<Input, Output> {
   private modules: Module<any, any>[] = [];
 
   constructor(module: Module<Input, Output>) {

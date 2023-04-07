@@ -1,5 +1,6 @@
+import { Transform } from "../modules/transform";
+
 import { expect } from "chai";
-import Transform from "../modules/transform";
 
 describe("Transform", () => {
   describe("#process()", () => {

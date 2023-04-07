@@ -1,5 +1,6 @@
+import { Flatten } from "../modules/flatten";
+
 import { expect } from "chai";
-import Flatten from "../modules/flatten";
 
 describe("Flatten", () => {
   describe("#process()", () => {

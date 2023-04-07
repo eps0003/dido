@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Throws an error.
  */
-export default class Throw<T> implements Module<T, never> {
+export class Throw<T> implements Module<T, never> {
   constructor(private error: Module<T, unknown>) {}
 
   async process(data: T): Promise<never> {

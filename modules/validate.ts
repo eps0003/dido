@@ -1,11 +1,11 @@
 import { z, ZodSchema } from "zod";
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Validates the input against a Zod schema.
  * @see {@link https://zod.dev/}
  */
-export default class Validate<T extends ZodSchema>
+export class Validate<T extends ZodSchema>
   implements Module<unknown, z.infer<T>>
 {
   constructor(private schema: Module<unknown, T>) {}

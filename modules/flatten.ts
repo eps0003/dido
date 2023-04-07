@@ -1,4 +1,4 @@
-import Module from "../module";
+import { Module } from "../module";
 
 type FlatArray<Input> = (Input extends readonly (infer InnerArr)[]
   ? InnerArr extends readonly (infer InnerArr)[]
@@ -11,7 +11,7 @@ type FlatArray<Input> = (Input extends readonly (infer InnerArr)[]
  *
  * For example, a three-dimensional array will flatten to two dimensions.
  */
-export default class Flatten<Input extends unknown[]>
+export class Flatten<Input extends unknown[]>
   implements Module<Input, FlatArray<Input>>
 {
   process(data: Input): FlatArray<Input> {

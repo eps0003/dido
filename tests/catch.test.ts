@@ -1,7 +1,8 @@
+import { Catch } from "../modules/catch";
+import { Literal } from "../modules/literal";
+import { Throw } from "../modules/throw";
+
 import { expect } from "chai";
-import Catch from "../modules/catch";
-import Literal from "../modules/literal";
-import Throw from "../modules/throw";
 import chai = require("chai");
 import chaiAsPromised = require("chai-as-promised");
 import sinon = require("sinon");

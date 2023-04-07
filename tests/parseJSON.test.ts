@@ -1,5 +1,6 @@
+import { ParseJSON } from "../modules/parseJSON";
+
 import { expect } from "chai";
-import ParseJSON from "../modules/parseJSON";
 
 describe("ParseJSON", () => {
   describe("#process()", () => {

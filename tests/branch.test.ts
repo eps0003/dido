@@ -1,8 +1,8 @@
+import { Branch } from "../modules/branch";
+import { Literal } from "../modules/literal";
+
 import { expect } from "chai";
-import Branch from "../modules/branch";
-import Literal from "../modules/literal";
 import sinon = require("sinon");
-import Transform from "../modules/transform";
 
 describe("Branch", () => {
   describe("#process()", () => {

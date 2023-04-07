@@ -1,6 +1,7 @@
+import { If } from "../modules/if";
+import { Literal } from "../modules/literal";
+
 import { expect } from "chai";
-import If from "../modules/if";
-import Literal from "../modules/literal";
 import sinon = require("sinon");
 
 describe("If", () => {

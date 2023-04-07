@@ -1,6 +1,6 @@
-import Module from "../module";
-import Time, { TimeOutput } from "./time";
-import Transform from "./transform";
+import { Module } from "../module";
+import { Time, TimeOutput } from "./time";
+import { Transform } from "./transform";
 
 function getDefaultValue<T>(): Module<TimeOutput<T>, unknown> {
   return new Transform(({ duration }) => {
@@ -11,7 +11,7 @@ function getDefaultValue<T>(): Module<TimeOutput<T>, unknown> {
 /**
  * Processes the module and logs how long it took to process when finished, then returns the result of the module.
  */
-export default class LogTime<Input, Output> implements Module<Input, Output> {
+export class LogTime<Input, Output> implements Module<Input, Output> {
   constructor(
     private module: Module<Input, Output>,
     private value: Module<TimeOutput<Output>, unknown> = getDefaultValue()

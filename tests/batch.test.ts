@@ -1,6 +1,7 @@
+import { Batch } from "../modules/batch";
+import { Literal } from "../modules/literal";
+
 import { expect } from "chai";
-import Batch from "../modules/batch";
-import Literal from "../modules/literal";
 import chai = require("chai");
 import chaiAsPromised = require("chai-as-promised");
 

@@ -1,12 +1,13 @@
-import If from "../modules/if";
-import Literal from "../modules/literal";
-import Log from "../modules/log";
-import LoopIndex from "../modules/loopIndex";
-import Pipe from "../modules/pipe";
-import Transform from "../modules/transform";
-import Wait from "../modules/wait";
+import { Module } from "../module";
+import { If } from "../modules/if";
+import { Literal } from "../modules/literal";
+import { Log } from "../modules/log";
+import { LoopIndex } from "../modules/loopIndex";
+import { Pipe } from "../modules/pipe";
+import { Transform } from "../modules/transform";
+import { Wait } from "../modules/wait";
 
-export default new If<number>(new Literal(true))
+export const TestJob: Module<number, number> = new If<number>(new Literal(true))
   .onTrue(
     new LoopIndex(
       [new Literal(0), new Literal(10)],

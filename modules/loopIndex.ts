@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Repeatedly process the module in a for loop, passing the processed data between iterations.
  */
-export default class LoopIndex<T> implements Module<T, T> {
+export class LoopIndex<T> implements Module<T, T> {
   constructor(private range: Range<T>, private module: Module<T, T>) {}
 
   async process(data: T) {

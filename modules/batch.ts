@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Splits the input array into batches of a specified size.
  */
-export default class Batch<T> implements Module<T[], T[][]> {
+export class Batch<T> implements Module<T[], T[][]> {
   constructor(private batchSize: Module<T[], number>) {}
 
   async process(data: T[]): Promise<T[][]> {

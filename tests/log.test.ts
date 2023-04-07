@@ -1,7 +1,8 @@
+import { Literal } from "../modules/literal";
+import { Log } from "../modules/log";
+
 import { expect } from "chai";
-import Log from "../modules/log";
 import sinon = require("sinon");
-import Literal from "../modules/literal";
 
 describe("Log", () => {
   let stub: sinon.SinonStub;

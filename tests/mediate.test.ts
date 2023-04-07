@@ -1,8 +1,9 @@
+import { Literal } from "../modules/literal";
+import { Mediate } from "../modules/mediate";
+import { Transform } from "../modules/transform";
+
 import { expect } from "chai";
-import Literal from "../modules/literal";
-import Mediate from "../modules/mediate";
 import sinon = require("sinon");
-import Transform from "../modules/transform";
 
 describe("Mediate", () => {
   describe("#process()", () => {

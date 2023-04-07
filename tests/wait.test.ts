@@ -1,6 +1,7 @@
+import { Literal } from "../modules/literal";
+import { Wait } from "../modules/wait";
+
 import { expect } from "chai";
-import Literal from "../modules/literal";
-import Wait from "../modules/wait";
 
 describe("Wait", () => {
   describe("#process()", () => {

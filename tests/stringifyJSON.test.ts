@@ -1,5 +1,6 @@
+import { StringifyJSON } from "../modules/stringifyJSON";
+
 import { expect } from "chai";
-import StringifyJSON from "../modules/stringifyJSON";
 
 describe("StringifyJSON", () => {
   describe("#process()", () => {

@@ -1,7 +1,7 @@
-import testJob from "./jobs/testJob";
+import { TestJob } from "./jobs/testJob";
 
 async function main() {
-  const result = await testJob.process(0);
+  const result = await TestJob.process(0);
   console.log(result);
 }
 

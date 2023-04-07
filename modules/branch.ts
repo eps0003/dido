@@ -1,4 +1,4 @@
-import Module from "../module";
+import { Module } from "../module";
 
 type AddBranch<M, T> = M extends Branch<infer A, infer B, infer Output>
   ? Branch<A, B, Output extends unknown[] ? [...Output, T] : [Output, T]>
@@ -7,7 +7,7 @@ type AddBranch<M, T> = M extends Branch<infer A, infer B, infer Output>
 /**
  * Processes modules at the same time, returning the output of all modules once all modules have finished processing.
  */
-export default class Branch<
+export class Branch<
   Input,
   FirstOutput,
   Output extends unknown[] = [FirstOutput]

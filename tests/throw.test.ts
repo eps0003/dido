@@ -1,6 +1,7 @@
+import { Literal } from "../modules/literal";
+import { Throw } from "../modules/throw";
+
 import { expect } from "chai";
-import Throw from "../modules/throw";
-import Literal from "../modules/literal";
 
 describe("Throw", () => {
   describe("#process()", () => {

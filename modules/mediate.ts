@@ -1,11 +1,11 @@
-import Module from "../module";
-import Pipe from "./pipe";
-import Transform from "./transform";
+import { Module } from "../module";
+import { Pipe } from "./pipe";
+import { Transform } from "./transform";
 
 /**
  * Processes a module, then allows the result to be processed alongside the initial input data, usually to merge the two.
  */
-export default class Mediate<Input, ModuleOutput, Output>
+export class Mediate<Input, ModuleOutput, Output>
   implements Module<Input, Output>
 {
   constructor(

@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Waits a specified number of seconds.
  */
-export default class Wait<T> implements Module<T, T> {
+export class Wait<T> implements Module<T, T> {
   constructor(private seconds: Module<T, number>) {}
 
   async process(data: T): Promise<T> {

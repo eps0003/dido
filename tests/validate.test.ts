@@ -1,6 +1,7 @@
+import { Literal } from "../modules/literal";
+import { Validate, z } from "../modules/validate";
+
 import { expect } from "chai";
-import Literal from "../modules/literal";
-import Validate, { z } from "../modules/validate";
 
 describe("Validate", () => {
   describe("#process()", () => {

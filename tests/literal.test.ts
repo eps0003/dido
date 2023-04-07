@@ -1,5 +1,6 @@
+import { Literal } from "../modules/literal";
+
 import { expect } from "chai";
-import Literal from "../modules/literal";
 
 describe("Literal", () => {
   describe("#process()", () => {

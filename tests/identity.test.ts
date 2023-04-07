@@ -1,5 +1,6 @@
+import { Identity } from "../modules/identity";
+
 import { expect } from "chai";
-import Identity from "../modules/identity";
 
 describe("Identity", () => {
   describe("#process()", () => {

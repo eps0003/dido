@@ -1,11 +1,11 @@
-import Module from "../module";
+import { Module } from "../module";
 
 export type CatchOutput<T> = { data: T; error: unknown };
 
 /**
  * Catches and handles thrown errors.
  */
-export default class Catch<Input, Output> implements Module<Input, Output> {
+export class Catch<Input, Output> implements Module<Input, Output> {
   constructor(
     private module: Module<Input, Output>,
     private handleError: Module<CatchOutput<Input>, Output>

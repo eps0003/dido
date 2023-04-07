@@ -1,12 +1,12 @@
 import { promises as fs } from "fs";
-import Module from "../module";
+import { Module } from "../module";
 
 type ReadFileOptions = Parameters<typeof fs["readFile"]>[1];
 
 /**
  * Reads a file from the file system and returns its contents.
  */
-export default class ReadFile<Input> implements Module<Input, string> {
+export class ReadFile<Input> implements Module<Input, string> {
   constructor(
     private filePath: Module<Input, string>,
     private options?: Module<Input, ReadFileOptions>

@@ -1,9 +1,9 @@
-import Module from "../module";
+import { Module } from "../module";
 
 /**
  * Processes modules at the same time, returning the input once all modules have finished processing.
  */
-export default class Fork<T> implements Module<T, T> {
+export class Fork<T> implements Module<T, T> {
   private modules: Module<T, unknown>[] = [];
 
   constructor(...modules: Module<T, unknown>[]) {

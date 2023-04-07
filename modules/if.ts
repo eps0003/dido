@@ -1,10 +1,10 @@
-import Module from "../module";
-import Literal from "./literal";
+import { Module } from "../module";
+import { Literal } from "./literal";
 
 /**
  * Conditionally processes modules depending on the result of the predicate.
  */
-export default class If<T> implements Module<T, T> {
+export class If<T> implements Module<T, T> {
   private trueModule?: Module<T, T>;
   private falseModule?: Module<T, T>;
 

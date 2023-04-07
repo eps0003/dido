@@ -1,6 +1,7 @@
+import { Fork } from "../modules/fork";
+import { Literal } from "../modules/literal";
+
 import { expect } from "chai";
-import Fork from "../modules/fork";
-import Literal from "../modules/literal";
 import sinon = require("sinon");
 
 describe("Fork", () => {

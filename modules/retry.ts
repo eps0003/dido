@@ -1,10 +1,10 @@
-import Module from "../module";
-import Fork from "./fork";
+import { Module } from "../module";
+import { Fork } from "./fork";
 
 /**
  * Reprocesses the module if an error is thrown up to a specified maximum number of retries.
  */
-export default class Retry<Input, Output> implements Module<Input, Output> {
+export class Retry<Input, Output> implements Module<Input, Output> {
   private retryModules: Module<[Input, unknown], unknown>[] = [];
 
   constructor(
