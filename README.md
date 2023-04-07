@@ -22,7 +22,7 @@ All modules are built upon this foundation by combining existing modules and cus
 | Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                                   |
 | Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [LoopIndex](#loopindex) • [LoopWhile](#loopwhile) • [Mediate](#mediate) • [Pipe](#pipe) |
 | Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                                     |
-| File System    | [ReadFile](#readfile)                                                                                                                   |
+| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                                                         |
 | HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                                                     |
 | JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                               |
 | Logging        | [Log](#log) • [LogTime](#logtime)                                                                                                       |
@@ -437,6 +437,19 @@ await middleware.process(4);
 // 6
 ```
 
+### Validate
+
+Validates the input against a [Zod](https://zod.dev/) schema.
+
+```ts
+const schema = new Literal(z.string());
+
+const middleware = new Validate(schema);
+
+await middleware.process("Hello, World!");
+// Hello, World!
+```
+
 ### Wait
 
 Waits a specified number of seconds.
@@ -451,15 +464,22 @@ await middleware.process("Hello, World!");
 // Hello, World!
 ```
 
-### Validate
+### WriteFile
 
-Validates the input against a [Zod](https://zod.dev/) schema.
+Writes a file to the file system, then returns the input.
 
 ```ts
-const schema = new Literal(z.string());
-
-const middleware = new Validate(schema);
+const middleware = new WriteFile<string>(
+  new Literal("./data.txt"),
+  new Identity()
+);
 
 await middleware.process("Hello, World!");
 // Hello, World!
+```
+
+`./data.txt`:
+
+```
+Hello, World!
 ```
