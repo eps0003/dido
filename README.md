@@ -190,10 +190,10 @@ await middleware.process("Hello, World!");
 Conditionally processes modules depending on the result of the predicate.
 
 ```ts
-const middleware = new If({
+const middleware = new If<number>({
   predicate: new Literal(true),
-  onTrue: new Transform<number, number>((data) => data + 2),
-  onFalse: new Transform<number, number>((data) => data + 4),
+  onTrue: new Transform((data) => data + 2),
+  onFalse: new Transform((data) => data + 4),
 });
 
 await middleware.process(4);
