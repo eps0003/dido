@@ -16,18 +16,18 @@ All modules are built upon this foundation by combining existing modules and cus
 
 ## Modules
 
-| Type           | Modules                                                                                             |
-| -------------- | --------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync)                 |
-| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                               |
-| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe) |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                 |
-| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                     |
-| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                 |
-| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                           |
-| Logging        | [Log](#log) • [LogTime](#logtime)                                                                   |
-| Time           | [Time](#time) • [Wait](#wait)                                                                       |
-| Validation     | [Validate](#validate)                                                                               |
+| Type           | Modules                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Filter](#filter) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync) |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                   |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe)     |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                     |
+| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                         |
+| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                     |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                               |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                       |
+| Time           | [Time](#time) • [Wait](#wait)                                                                           |
+| Validation     | [Validate](#validate)                                                                                   |
 
 ### Batch
 
@@ -101,45 +101,17 @@ await middleware.process("https://www.google.com/");
 // <!doctype html> ... </html>
 ```
 
-### Log
+### Filter
 
-Logs the result of the module to the console if specified, otherwise, logs the input to the console. The input is returned as output.
-
-```ts
-const middleware1 = new Log();
-await middleware1.process("Hello, World!");
-// Hello, World!
-
-const middleware2 = new Log(new Literal("Goodbye, World!"));
-await middleware2.process("Hello, World!");
-// Hello, World!
-```
-
-Console output:
-
-```
-Hello, World!
-Goodbye, World!
-```
-
-### LogTime
-
-Processes the module and logs how long it took to process when finished, then returns the result of the module.
+Returns the elements of the input array based on the result of the predicate.
 
 ```ts
-const middleware = new LogTime({
-  module: new Wait(new Literal(2)),
-});
+const predicate = new Transform<number, boolean>((val) => val % 2 == 0);
 
-await middleware.process("Hello, World!");
-// *waits 2 seconds*
-// Hello, World!
-```
+const middleware = new Filter(predicate);
 
-Console output:
-
-```
-2.016 seconds
+await middleware.process([1, 2, 3, 4, 5, 6]);
+// [ 2, 4, 6 ]
 ```
 
 ### Flatten
@@ -209,6 +181,47 @@ const middleware = new Literal("Goodbye, World!");
 
 await middleware.process("Hello, World!");
 // Goodbye, World!
+```
+
+### Log
+
+Logs the result of the module to the console if specified, otherwise, logs the input to the console. The input is returned as output.
+
+```ts
+const middleware1 = new Log();
+await middleware1.process("Hello, World!");
+// Hello, World!
+
+const middleware2 = new Log(new Literal("Goodbye, World!"));
+await middleware2.process("Hello, World!");
+// Hello, World!
+```
+
+Console output:
+
+```
+Hello, World!
+Goodbye, World!
+```
+
+### LogTime
+
+Processes the module and logs how long it took to process when finished, then returns the result of the module.
+
+```ts
+const middleware = new LogTime({
+  module: new Wait(new Literal(2)),
+});
+
+await middleware.process("Hello, World!");
+// *waits 2 seconds*
+// Hello, World!
+```
+
+Console output:
+
+```
+2.016 seconds
 ```
 
 ### Loop
