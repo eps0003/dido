@@ -16,18 +16,18 @@ All modules are built upon this foundation by combining existing modules and cus
 
 ## Modules
 
-| Type           | Modules                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Filter](#filter) • [Flatten](#flatten) • [MapAsync](#mapasync) • [MapSync](#mapsync) |
-| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                   |
-| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe)     |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                     |
-| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                         |
-| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                     |
-| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                               |
-| Logging        | [Log](#log) • [LogTime](#logtime)                                                                       |
-| Time           | [Time](#time) • [Wait](#wait)                                                                           |
-| Validation     | [Validate](#validate)                                                                                   |
+| Type           | Modules                                                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Filter](#filter) • [Flatten](#flatten) • [Group](#group) • [MapAsync](#mapasync) • [MapSync](#mapsync) |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                     |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe)                       |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                       |
+| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                                           |
+| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                                       |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                 |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                         |
+| Time           | [Time](#time) • [Wait](#wait)                                                                                             |
+| Validation     | [Validate](#validate)                                                                                                     |
 
 ### Batch
 
@@ -144,6 +144,27 @@ const middleware = new Fork(add2, subtract2, multiply2);
 
 await middleware.process(4);
 // 4
+```
+
+### Group
+
+Partitions elements of the input array into any number of groups.
+
+```ts
+type NumberGroup = "even" | "odd" | "square";
+
+const grouping = new Transform<number, NumberGroup[]>((data) => {
+  const groups: NumberGroup[] = [];
+  if (data % 2 === 0) groups.push("even");
+  if (data % 2 !== 0) groups.push("odd");
+  if (Math.sqrt(data) % 1 === 0) groups.push("square");
+  return groups;
+});
+
+const middleware = new Group(grouping);
+
+await middleware.process([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+// { even: [ 0, 2, 4, 6, 8 ], odd: [ 1, 3, 5, 7, 9 ], square: [ 0, 1, 4, 9 ] }
 ```
 
 ### Identity
