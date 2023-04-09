@@ -1,20 +1,17 @@
 import { promises as fs } from "fs";
 import { Module } from "../module";
 
-type WriteFileOptions = Parameters<typeof fs["writeFile"]>[2];
+export type WriteFileProps<Input> = {
+  filePath: Module<Input, string>;
+  fileData: Module<Input, string>;
+  options?: Module<Input, Parameters<typeof fs["writeFile"]>[2]>;
+};
 
 /**
  * Writes a file to the file system, then returns the input.
  */
-
 export class WriteFile<Input> implements Module<Input, Input> {
-  constructor(
-    private props: {
-      filePath: Module<Input, string>;
-      fileData: Module<Input, string>;
-      options?: Module<Input, WriteFileOptions>;
-    }
-  ) {}
+  constructor(private props: WriteFileProps<Input>) {}
 
   async process(data: Input): Promise<Input> {
     const [filePath, fileData, options] = await Promise.all([

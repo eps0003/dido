@@ -1,6 +1,6 @@
 import { Module } from "../module";
 
-export type TimeOutput<T> = { data: T; duration: number };
+export type TimeOutput<Output> = { data: Output; duration: number };
 
 /**
  * Processes the module and returns result along with how long it took to process in milliseconds.

@@ -1,15 +1,15 @@
 import { Module } from "../module";
 
+export type CatchProps<Input, Output> = {
+  module: Module<Input, Output>;
+  errorHandler: Module<{ data: Input; error: unknown }, Output>;
+};
+
 /**
  * Catches and handles thrown errors.
  */
 export class Catch<Input, Output> implements Module<Input, Output> {
-  constructor(
-    private props: {
-      module: Module<Input, Output>;
-      errorHandler: Module<{ data: Input; error: unknown }, Output>;
-    }
-  ) {}
+  constructor(private props: CatchProps<Input, Output>) {}
 
   async process(data: Input): Promise<Output> {
     try {

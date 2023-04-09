@@ -12,11 +12,13 @@ type FalseProps<T> = {
   onFalse: Module<T, T>;
 };
 
+export type IfProps<T> = TrueProps<T> | FalseProps<T>;
+
 /**
  * Conditionally processes modules depending on the result of the predicate.
  */
 export class If<T> implements Module<T, T> {
-  constructor(private props: TrueProps<T> | FalseProps<T>) {}
+  constructor(private props: IfProps<T>) {}
 
   async process(data: T): Promise<T> {
     if (await this.props.predicate.process(data)) {
