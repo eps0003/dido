@@ -106,7 +106,7 @@ await middleware.process("https://www.google.com/");
 Returns the elements of the input array based on the result of the predicate.
 
 ```ts
-const predicate = new Transform<number, boolean>((val) => val % 2 == 0);
+const predicate = new Transform<number, boolean>((val) => val % 2 === 0);
 
 const middleware = new Filter(predicate);
 
@@ -370,11 +370,11 @@ await middleware.process("Hello, World!");
 Console output:
 
 ```
-Hello World!
+Hello, World!
 retry
-Hello World!
+Hello, World!
 retry
-Hello World!
+Hello, World!
 Error: uh oh!
     at <stack trace>
 ```

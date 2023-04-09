@@ -44,5 +44,15 @@ describe("Log", () => {
       expect(stub.calledWith("Goodbye, World!"), "called with input").to.be
         .true;
     });
+
+    it("processes value module only once if specified", async () => {
+      const valueModule = new Literal("Goodbye, World!");
+      const valueModuleProcess = sinon.spy(valueModule, "process");
+
+      const logger = new Log(valueModule);
+      await logger.process("Hello, World!");
+
+      expect(valueModuleProcess.calledOnce, "processed once").to.be.true;
+    });
   });
 });

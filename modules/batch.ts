@@ -10,7 +10,7 @@ export class Batch<T> implements Module<T[], T[][]> {
     const batches: T[][] = [];
     const batchSize = Math.floor(await this.batchSize.process(data));
 
-    if (batchSize < 1) {
+    if (batchSize <= 0) {
       throw new Error("Batch size must be greater than 0");
     }
 

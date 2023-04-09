@@ -87,5 +87,20 @@ describe("If", () => {
       expect(trueModuleProcess.notCalled, "onTrue module not processed").to.be
         .true;
     });
+
+    it("processes the predicate module only once", async () => {
+      const predicate = new Literal(false);
+      const predicateProcess = sinon.spy(predicate, "process");
+
+      const module = new If({
+        predicate: predicate,
+        onTrue: new Literal(2),
+      });
+
+      const result = await module.process(4);
+
+      expect(result).to.equal(4);
+      expect(predicateProcess.calledOnce, "processed once").to.be.true;
+    });
   });
 });
