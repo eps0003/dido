@@ -1,6 +1,6 @@
 # Dido
 
-Dido (**D**ata **I**n, **D**ata **O**ut; pronounced 'dai-doh') is an simple yet powerful, modular, vendor-agnostic middleware system written in TypeScript. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
+Dido (**D**ata **I**n, **D**ata **O**ut; pronounced 'dai-doh') is a simple yet powerful, modular, vendor-agnostic middleware system written in TypeScript. It turns building a middleware into a plug-and-play experience by combining reusable modules to transform data.
 
 ## Overview
 
@@ -116,7 +116,7 @@ await middleware.process([1, 2, 3, 4, 5, 6]);
 
 ### Flatten
 
-Flatten a multi-dimensional array by one level. For example, a three-dimensional array will flatten to two dimensions.
+Flattens a multi-dimensional array by one level. For example, a three-dimensional array will flatten to two dimensions.
 
 ```ts
 const middleware = new Flatten();

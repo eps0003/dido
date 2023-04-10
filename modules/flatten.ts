@@ -7,7 +7,7 @@ type FlatArray<T> = (T extends readonly (infer InnerArr)[]
   : T)[];
 
 /**
- * Flatten a multi-dimensional array by one level.
+ * Flattens a multi-dimensional array by one level.
  *
  * For example, a three-dimensional array will flatten to two dimensions.
  */
