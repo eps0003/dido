@@ -1,5 +1,5 @@
 import { Module } from "../module";
-import { MapAsync } from "./mapAsync";
+import { Map } from "./map";
 
 export type GroupOutput<Group extends string, Input> = Record<Group, Input[]>;
 
@@ -14,7 +14,7 @@ export class Group<Input, Group extends string>
   async process(data: Input[]): Promise<GroupOutput<Group, Input>> {
     const output: GroupOutput<string, Input> = {};
 
-    const allGroups = await new MapAsync(this.grouping).process(data);
+    const allGroups = await new Map({ module: this.grouping }).process(data);
 
     data.forEach((value, index) => {
       const anyGroup = allGroups[index];

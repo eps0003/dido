@@ -16,18 +16,18 @@ All modules are built upon this foundation by combining existing modules and cus
 
 ## Modules
 
-| Type           | Modules                                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Array          | [Batch](#batch) • [Filter](#filter) • [Flatten](#flatten) • [Group](#group) • [MapAsync](#mapasync) • [MapSync](#mapsync) |
-| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                                                     |
-| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe)                       |
-| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                                       |
-| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                                           |
-| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                                       |
-| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                                                 |
-| Logging        | [Log](#log) • [LogTime](#logtime)                                                                                         |
-| Time           | [Time](#time) • [Wait](#wait)                                                                                             |
-| Validation     | [Validate](#validate)                                                                                                     |
+| Type           | Modules                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------- |
+| Array          | [Batch](#batch) • [Filter](#filter) • [Flatten](#flatten) • [Group](#group) • [Map](#map)           |
+| Basic          | [Identity](#identity) • [Literal](#literal) • [Transform](#transform)                               |
+| Control Flow   | [Branch](#branch) • [Fork](#fork) • [If](#if) • [Loop](#loop) • [Mediate](#mediate) • [Pipe](#pipe) |
+| Error Handling | [Catch](#catch) • [Retry](#retry) • [Throw](#throw)                                                 |
+| File System    | [ReadFile](#readfile) • [WriteFile](#writefile)                                                     |
+| HTTP           | [Fetch](#fetch) • [FetchJSON](#fetchjson) • [FetchText](#fetchtext)                                 |
+| JSON           | [ParseJSON](#parsejson) • [StringifyJSON](#stringifyjson)                                           |
+| Logging        | [Log](#log) • [LogTime](#logtime)                                                                   |
+| Time           | [Time](#time) • [Wait](#wait)                                                                       |
+| Validation     | [Validate](#validate)                                                                               |
 
 ### Batch
 
@@ -259,32 +259,18 @@ await middleware.process(0);
 // 10
 ```
 
-### MapAsync
+### Map
 
-Processes a module for all elements in the input array at the same time, then returns the resulting array once all elements have finished processing.
-
-```ts
-const double = new Transform<number, number>((data) => data * 2);
-const wait = new Wait(new Literal(2));
-const doubleAndWait = new Pipe(double).next(wait);
-
-const middleware = new MapAsync(doubleAndWait);
-
-await middleware.process([1, 2, 3, 4, 5]);
-// *waits 2 seconds*
-// [ 2, 4, 6, 8, 10 ]
-```
-
-### MapSync
-
-Processes a module for all elements in the input array in succession, then returns the resulting array once all elements have finished processing.
+Processes a module for all elements in the input array, then returns the resulting array once all elements have finished processing.
 
 ```ts
 const double = new Transform<number, number>((data) => data * 2);
 const wait = new Wait(new Literal(2));
-const doubleAndWait = new Pipe(double).next(wait);
 
-const middleware = new MapSync(doubleAndWait);
+const middleware = new Map({
+  module: new Pipe(double).next(wait),
+  synchronous: new Literal(true),
+});
 
 await middleware.process([1, 2, 3, 4, 5]);
 // *waits 10 seconds*
